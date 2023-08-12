@@ -4,6 +4,7 @@ import 'material-icons/iconfont/material-icons.css';
 import type { Metadata } from 'next';
 import { Lato, Bebas_Neue } from 'next/font/google';
 import Navigation from './Navigation';
+import TopBar from './TopBar';
 
 export const lato = Lato({ weight: '400', subsets: ['latin'] });
 export const bebas_neue = Bebas_Neue({
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const navLinks = [
-  { href: '/', name: 'Home', symbol: 'home' },
+  { href: '/home', name: 'Home', symbol: 'home' },
   { href: '/workout', name: 'Workout', symbol: 'exercise' },
   { href: '/profile', name: 'Profile', symbol: 'person' },
 ];
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.className} ${bebas_neue.variable}`}>
+        <TopBar />
         <Navigation navLinks={navLinks} />
         {children}
       </body>

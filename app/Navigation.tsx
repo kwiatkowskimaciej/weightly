@@ -18,9 +18,9 @@ export default function Navigation({ navLinks }: NavigationProps) {
 
   return (
     <nav className="fixed bottom-0 w-full h-20 bg-stone-900 text-stone-50 text-xs sm:w-20 sm:h-full sm:flex sm:items-center xl:w-[360px] xl:items-start">
-      <ul className="flex mx-2 gap-2 pt-3 justify-around sm:flex-col sm:gap-3 sm:mx-3 xl:gap-3">
-        <div className="hidden h-14 mx-4 xl:flex items-center">
-          <span className=" font-header text-4xl">Weightly</span>
+      <ul className="flex justify-around gap-2 pt-3 mx-2 sm:flex-col sm:gap-3 sm:mx-3 xl:gap-3">
+        <div className="items-center hidden mx-4 h-14 xl:flex">
+          <span className="text-2xl font-header">Weightly</span>
         </div>
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
