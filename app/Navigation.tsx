@@ -17,8 +17,11 @@ export default function Navigation({ navLinks }: NavigationProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 w-full h-20 bg-stone-900 text-stone-50 text-xs">
-      <ul className="flex mx-2 gap-2 pt-3 justify-around">
+    <nav className="fixed bottom-0 w-full h-20 bg-stone-900 text-stone-50 text-xs sm:w-20 sm:h-full sm:flex sm:items-center xl:w-[360px] xl:items-start">
+      <ul className="flex mx-2 gap-2 pt-3 justify-around sm:flex-col sm:gap-3 sm:mx-3 xl:gap-3">
+        <div className="hidden h-14 mx-4 xl:flex items-center">
+          <span className=" font-header text-4xl">Weightly</span>
+        </div>
         {navLinks.map((link) => {
           const isActive = pathname === link.href;
 
@@ -27,11 +30,11 @@ export default function Navigation({ navLinks }: NavigationProps) {
               <Link
                 href={link.href}
                 key={link.name}
-                className="flex flex-col items-center w-full"
+                className="flex flex-col items-center w-full xl:flex-row"
               >
                 <div
                   className={
-                    'mx-auto mb-1 h-8 w-16 rounded-full flex items-center justify-center ' +
+                    'mx-auto mb-1 h-8 w-16 rounded-full flex items-center justify-center sm:w-14 xl:w-[336px] xl:justify-start xl:pl-4 xl:h-14 xl:mb-0 ' +
                     (isActive ? 'bg-lime-300 text-stone-900' : 'text-stone-50')
                   }
                 >
@@ -39,7 +42,14 @@ export default function Navigation({ navLinks }: NavigationProps) {
                     {link.symbol}
                   </span>
                 </div>
-                <span className="block">{link.name}</span>
+                <span
+                  className={
+                    'block xl:absolute xl:left-16 ' +
+                    (isActive ? 'xl:text-stone-900' : 'text-stone-50')
+                  }
+                >
+                  {link.name}
+                </span>
               </Link>
             </li>
           );
