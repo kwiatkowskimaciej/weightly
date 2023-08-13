@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { MonthCalendar } from '@/components/MonthCalendar';
+import { MonthCalendar } from '@/components/MonthCalendar/MonthCalendar';
 
 export default function TopBar() {
   const pathname = usePathname().slice(1);
@@ -18,7 +18,7 @@ export default function TopBar() {
         <button
           key={'calendar_month'}
           className="material-symbols-outlined"
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(!isOpen)}
         >
           calendar_month
         </button>
