@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -9,9 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'workout-card-pattern':
+          "linear-gradient(225deg, rgba(231, 229, 228, 0.00) 0%, rgba(28, 25, 20, 0.20) 23.44%, rgba(28, 25, 23, 0.75) 43.23%, rgba(28, 25, 23, 0.95) 67.50%), url('/workout-1.webp')",
       },
       fontFamily: {
         header: ['var(--font-bebas-neue)'],
@@ -19,5 +18,5 @@ const config: Config = {
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;
