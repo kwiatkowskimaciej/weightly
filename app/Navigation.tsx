@@ -26,7 +26,7 @@ export default function Navigation({ navLinks }: NavigationProps) {
           const isActive = pathname === link.href;
 
           return (
-            <li className="grow">
+            <li key={link.name} className="grow">
               <Link
                 href={link.href}
                 key={link.name}
