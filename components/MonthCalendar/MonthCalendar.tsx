@@ -18,7 +18,7 @@ export default function MonthCalendar({ show, setShow }: MonthCalendarProps) {
     <div
       className={twMerge(
         show ? '' : 'hidden',
-        'max-w-[328px] absolute top-16 right-4 ml-4 bg-stone-800 rounded-xl text-base font-sans px-3'
+        'max-w-[328px] absolute top-16 right-4 ml-4 bg-stone-800 rounded-xl text-base font-sans px-3 z-10'
       )}
     >
       <div className="flex justify-around items-center mt-5 mb-[30px] text-sm">
