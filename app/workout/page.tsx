@@ -1,6 +1,13 @@
 import WorkoutCard from '@/components/WorkoutCard/WorkoutCard';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import { redirect } from 'next/navigation';
 
 export default async function Workout() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/api/auth/signin');
+  }
   return (
     <>
       <div className="m-4 sm:ml-24 xl:ml-[376px] xl:max-w-xl">
@@ -16,7 +23,7 @@ export default async function Workout() {
             <div className="h-[3px] w-[30px] bg-lime-300 rounded-t-[3px]"></div>
           </div>
           <div className="w-1/2 h-full flex flex-col items-center justify-end">
-            <div className='pb-[9px]'>Individual</div>
+            <div className="pb-[9px]">Individual</div>
             <div className="h-[3px] w-[30px] bg-stone-900 rounded-t-[3px]"></div>
           </div>
         </div>
