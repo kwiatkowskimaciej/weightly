@@ -1,3 +1,41 @@
+import AuthCheck from '@/components/AuthCheck';
+import { SignInButton, SignOutButton } from '@/components/buttons';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+import { prisma } from '@/lib/prisma';
+import Image from 'next/image';
+import WorkoutCard from '@/components/WorkoutCard/WorkoutCard';
+
 export default async function Profile() {
-  return <></>;
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/api/auth/signin');
+  }
+
+  const currentUserEmail = session?.user?.email!;
+  const user = await prisma.user.findUnique({
+    where: {
+      email: currentUserEmail,
+    },
+  });
+  return (
+    <div className="m-4 sm:ml-24 xl:ml-[376px]">
+      <div className="flex gap-3">
+        <Image src="/10.png" width={104} height={104} alt="Profile picture" />
+        <div>
+          <p className="text-stone-50 font-header text-3xl">{user?.name}</p>
+          <p className="text-stone-50 mb-2">@{user?.id.slice(-8)}</p>
+          <AuthCheck>
+            <SignOutButton />
+          </AuthCheck>
+        </div>
+      </div>
+      <div className="mt-6">
+        <p className="text-stone-50 font-header text-3xl">Last workouts</p>
+        <WorkoutCard />
+      </div>
+    </div>
+  );
 }
