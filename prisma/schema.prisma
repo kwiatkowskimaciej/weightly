@@ -59,3 +59,8 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Exercise {
+  id    String @id @default(cuid())
+  name  String
+}
