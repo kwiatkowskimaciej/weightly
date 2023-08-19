@@ -9,7 +9,16 @@ interface ExerciseSet {
   reps: number;
 }
 
-export default function ExerciseForm() {
+interface WorkoutExercisesSet {
+  id: number;
+  name: string;
+}
+
+interface ExerciseFormProps {
+  workoutExercises: WorkoutExercisesSet[];
+}
+
+export default function ExerciseForm({ workoutExercises }: ExerciseFormProps) {
   const [exerciseSets, setExerciseSets] = useState<ExerciseSet[]>([]);
   const [newSetId, setNewSetId] = useState(1);
 
