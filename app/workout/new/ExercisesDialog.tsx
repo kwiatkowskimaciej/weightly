@@ -3,16 +3,14 @@
 import ExerciseItem from '@/components/ExerciseItem';
 import { useState } from 'react';
 
-interface WorkoutExercisesSet {
-  id: number;
+interface ExercisesSet {
+  id: string;
   name: string;
 }
 
 interface Props {
   exercises: { id: string; name: string }[];
-  setWorkoutExercises: React.Dispatch<
-    React.SetStateAction<WorkoutExercisesSet[]>
-  >;
+  setWorkoutExercises: React.Dispatch<React.SetStateAction<ExercisesSet[]>>;
 }
 
 export default function ExercisesDialog({
@@ -20,7 +18,7 @@ export default function ExercisesDialog({
   setWorkoutExercises,
 }: Props) {
   let [isOpen, setIsOpen] = useState(false);
-  let [choosen, setChoosen] = useState([]);
+  let [chosen, setChosen] = useState<ExercisesSet[]>([]);
 
   return (
     <>
@@ -43,7 +41,10 @@ export default function ExercisesDialog({
           <div className="flex items-center gap-4">
             <button
               className="material-icons-outlined"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                setChosen([]);
+              }}
             >
               close
             </button>
@@ -53,15 +54,44 @@ export default function ExercisesDialog({
         <div>
           {exercises.map((exercise) => {
             return (
-              <div>
+              <div
+                key={exercise.id}
+                onClick={() => {
+                  if (chosen.some((item) => item.id === exercise.id)) {
+                    const updatedList = chosen.filter(
+                      (item) => item.id !== exercise.id
+                    );
+                    setChosen(updatedList);
+                  } else {
+                    setChosen((prevExercises) => [
+                      ...prevExercises,
+                      { id: exercise.id, name: exercise.name },
+                    ]);
+                  }
+                }}
+              >
                 <ExerciseItem {...exercise} />
               </div>
             );
           })}
         </div>
-        <button className={`${choosen.length === 0 && 'hidden'}`}>
-          Add exercises
-        </button>
+        <div className="px-4 w-full absolute bottom-4">
+          <button
+            className={`${
+              chosen.length === 0 && 'hidden'
+            } w-full flex items-center justify-center bg-lime-900 rounded-full h-10 font-bold `}
+            onClick={() => {
+              setWorkoutExercises((prevExercises) => [
+                ...prevExercises,
+                ...chosen,
+              ]);
+              setChosen([]);
+              setIsOpen(false);
+            }}
+          >
+            Add {chosen.length} exercise{chosen.length > 1 ? 's' : null}
+          </button>
+        </div>
       </div>
     </>
   );

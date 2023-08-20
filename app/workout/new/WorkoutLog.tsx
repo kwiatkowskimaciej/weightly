@@ -9,7 +9,7 @@ interface Props {
 }
 
 interface Exercise {
-  id: number;
+  id: string;
   name: string;
 }
 
