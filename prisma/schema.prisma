@@ -50,6 +50,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  workouts      Workout[]
 }
 
 model VerificationToken {
@@ -63,4 +64,11 @@ model VerificationToken {
 model Exercise {
   id    String @id @default(cuid())
   name  String
+}
+
+model Workout {
+  id    String @id @default(cuid())
+  log   String
+  userId String
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

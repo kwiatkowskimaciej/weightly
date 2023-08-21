@@ -5,10 +5,18 @@ import WorkoutLog from './WorkoutLog';
 
 export default async function NewWorkout() {
   const exercises = await prisma.exercise.findMany();
+
+  // const addWorkout = await prisma.workout.create({
+  //   data: {
+  //     email: 'elsa@prisma.io',
+  //     name: 'Elsa Prisma',
+  //   },
+  // });
+
   return (
     <div className="absolute top-0 w-full h-full z-20 bg-stone-900 text-stone-50">
-      <WorkoutTopBar />
-      <WorkoutLog exercises={exercises} />
+        <WorkoutTopBar />
+        <WorkoutLog exercises={exercises} />
     </div>
   );
 }

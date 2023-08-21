@@ -19,6 +19,9 @@ export default async function Profile() {
     where: {
       email: currentUserEmail,
     },
+    include: {
+      workouts: true,
+    },
   });
   return (
     <div className="m-4 sm:ml-24 xl:ml-[376px]">
@@ -34,6 +37,11 @@ export default async function Profile() {
       </div>
       <div className="mt-6">
         <p className="text-stone-50 font-header text-3xl">Last workouts</p>
+        {user?.workouts.map((workout) => {
+          return (
+            <p className='bg-stone-50'>{workout.log}</p>
+          )
+        })}
         <WorkoutCard />
       </div>
     </div>
