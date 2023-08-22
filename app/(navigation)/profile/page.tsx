@@ -2,7 +2,7 @@ import AuthCheck from '@/components/AuthCheck';
 import { SignInButton, SignOutButton } from '@/components/buttons';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '../../api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import WorkoutCard from '@/components/WorkoutCard/WorkoutCard';
@@ -33,7 +33,7 @@ export default async function Profile() {
         select: { exercises: true },
       },
     },
-  })
+  });
   return (
     <div className="m-4 sm:ml-24 xl:ml-[376px]">
       <div className="flex gap-3">
@@ -51,7 +51,10 @@ export default async function Profile() {
         {workouts.map((workout) => {
           return (
             <>
-              <WorkoutCard exerciseCount={workout._count.exercises} {...workout}/>
+              <WorkoutCard
+                exerciseCount={workout._count.exercises}
+                {...workout}
+              />
             </>
           );
         })}

@@ -95,7 +95,7 @@ export default function ExerciseForm({ workoutExercises }: ExerciseFormProps) {
 
   return (
     <>
-    <WorkoutTopBar exercises={exercises}/>
+      <WorkoutTopBar exercises={exercises} />
       <div>
         {exercises.map((exercise, exerciseIndex) => {
           return (

@@ -1,7 +1,7 @@
-import { addWorkout } from '@/app/workout/new/actions';
+import { addWorkout } from '@/app/(workouts)/quick/new/actions';
 import Link from 'next/link';
 
-export default function WorkoutTopBar({exercises}: any) {
+export default function WorkoutTopBar({ exercises }: any) {
   return (
     <div className="w-full h-16 px-4 bg-stone-900 text-stone-50 flex items-center justify-between border-b border-blue-400">
       <div className="flex items-center gap-4">
