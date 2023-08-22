@@ -1,8 +1,7 @@
 'use client';
 
-import { addWorkout } from '@/app/workout/new/actions';
-import { redirect } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
+import WorkoutTopBar from './WorkoutTopBar';
 
 interface Exercise {
   id: string;
@@ -28,7 +27,6 @@ interface ExerciseFormProps {
 
 export default function ExerciseForm({ workoutExercises }: ExerciseFormProps) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const updatedExercises = workoutExercises.map((workoutExercise) => {
@@ -97,10 +95,11 @@ export default function ExerciseForm({ workoutExercises }: ExerciseFormProps) {
 
   return (
     <>
+    <WorkoutTopBar exercises={exercises}/>
       <div>
         {exercises.map((exercise, exerciseIndex) => {
           return (
-            <>
+            <div key={exerciseIndex}>
               <div className="px-4">
                 <div className="border-b border-stone-800 py-4">
                   <div className="flex items-center gap-4">
@@ -190,17 +189,10 @@ export default function ExerciseForm({ workoutExercises }: ExerciseFormProps) {
                   <span className="material-symbols-outlined">add</span>Add set
                 </button>
               </div>
-            </>
+            </div>
           );
         })}
       </div>
-      <button
-        onClick={() => {
-          addWorkout(exercises);
-        }}
-      >
-        submit
-      </button>
     </>
   );
 }

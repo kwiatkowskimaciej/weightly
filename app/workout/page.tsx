@@ -30,7 +30,7 @@ export default async function Workout() {
             <div className="h-[3px] w-[30px] bg-stone-900 rounded-t-[3px]"></div>
           </div>
         </div>
-        <WorkoutCard />
+        {/* <WorkoutCard /> */}
       </div>
     </>
   );

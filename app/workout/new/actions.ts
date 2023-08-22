@@ -20,21 +20,41 @@ export async function addWorkout(data: any) {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
-
-  const log = JSON.stringify(data);
 
   const workout = await prisma.workout.create({
     data: {
-      log: log,
-      user: {
-        connect: {
-          id: user.id,
-        },
+      date: new Date(),
+      userId: user.id,
+    },
+  });
+
+  await prisma.workout.update({
+    where: { id: workout.id },
+    data: {
+      exercises: {
+        connect: data.map((exercise: any) => ({
+          id: exercise.id,
+        })),
       },
     },
   });
+
+  for (const exercise of data) {
+    await prisma.exercise.update({
+      where: { id: exercise.id },
+      data: {
+        sets: {
+          create: exercise.sets.map((set: any) => ({
+            weight: set.weight,
+            reps: set.reps,
+            completed: set.completed,
+          })),
+        },
+      },
+    });
+  }
 
   redirect('/workout');
 }

@@ -51,6 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   workouts      Workout[]
+  plans         Plan[]
 }
 
 model VerificationToken {
@@ -61,14 +62,38 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model Set {
+  id String @id @default(cuid())
+  weight Float
+  reps Int
+  completed Boolean
+  exercise  Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId String
+}
+
 model Exercise {
   id    String @id @default(cuid())
   name  String
+  sets     Set[]
+  workouts Workout[] @relation("ExerciseWorkout")
 }
 
 model Workout {
   id    String @id @default(cuid())
-  log   String
-  userId String
+  date DateTime
+  exercises Exercise[] @relation("ExerciseWorkout")
   user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  plan    Plan?   @relation(fields: [planId], references: [id])
+  planId  String?
+}
+
+model Plan {
+  id String @id @default(cuid())
+  name String
+  start DateTime
+  duration Int
+  workouts Workout[]
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }

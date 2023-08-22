@@ -23,6 +23,17 @@ export default async function Profile() {
       workouts: true,
     },
   });
+
+  const workouts = await prisma.workout.findMany({
+    where: {
+      userId: user?.id,
+    },
+    include: {
+      _count: {
+        select: { exercises: true },
+      },
+    },
+  })
   return (
     <div className="m-4 sm:ml-24 xl:ml-[376px]">
       <div className="flex gap-3">
@@ -37,12 +48,13 @@ export default async function Profile() {
       </div>
       <div className="mt-6">
         <p className="text-stone-50 font-header text-3xl">Last workouts</p>
-        {user?.workouts.map((workout) => {
+        {workouts.map((workout) => {
           return (
-            <p className='bg-stone-50'>{workout.log}</p>
-          )
+            <>
+              <WorkoutCard exerciseCount={workout._count.exercises} {...workout}/>
+            </>
+          );
         })}
-        <WorkoutCard />
       </div>
     </div>
   );
