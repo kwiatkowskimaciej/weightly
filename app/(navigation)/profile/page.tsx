@@ -52,6 +52,7 @@ export default async function Profile() {
           return (
             <>
               <WorkoutCard
+                key={workout.id}
                 exerciseCount={workout._count.exercises}
                 {...workout}
               />

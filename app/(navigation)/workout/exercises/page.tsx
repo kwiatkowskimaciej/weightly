@@ -8,7 +8,7 @@ export default async function Exercises() {
     <div>
       {exercises.map((exercise) => {
         return (
-          <ExerciseItem {...exercise} />
+          <ExerciseItem key={exercise.id} {...exercise} />
         );
       })}
     </div>
