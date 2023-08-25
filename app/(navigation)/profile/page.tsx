@@ -2,10 +2,10 @@ import AuthCheck from '@/components/AuthCheck';
 import { SignInButton, SignOutButton } from '@/components/buttons';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../../api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import WorkoutCard from '@/components/WorkoutCard/WorkoutCard';
+import { authOptions } from '@/lib/utils/authOptions';
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
