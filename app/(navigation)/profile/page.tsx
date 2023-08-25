@@ -46,7 +46,7 @@ export default async function Profile() {
           </AuthCheck>
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 mb-20">
         <p className="text-stone-50 font-header text-3xl">Last workouts</p>
         {workouts.map((workout) => {
           return (

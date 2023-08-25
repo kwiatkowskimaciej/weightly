@@ -5,7 +5,13 @@ import { authOptions } from '@/lib/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-export async function addWorkout(data: any) {
+interface Args {
+  data: any;
+  name: string;
+  save: boolean;
+}
+
+export async function addWorkout({data, name, save}: Args) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -25,7 +31,9 @@ export async function addWorkout(data: any) {
 
   const workout = await prisma.workout.create({
     data: {
+      name: name,
       date: new Date(),
+      save: save,
       userId: user.id,
     },
   });
@@ -56,6 +64,4 @@ export async function addWorkout(data: any) {
       },
     });
   }
-
-  redirect('/workout');
 }

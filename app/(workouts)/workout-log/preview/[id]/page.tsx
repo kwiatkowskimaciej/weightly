@@ -56,7 +56,6 @@ export default async function Preview({ params }: Props) {
           </div>
         );
       })}
-      <WorkoutTable workoutData={workoutData} />
     </div>
   );
 }

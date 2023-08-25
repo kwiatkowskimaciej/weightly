@@ -82,7 +82,9 @@ model Exercise {
 
 model Workout {
   id    String @id @default(cuid())
+  name String
   date DateTime
+  save Boolean
   exercises Exercise[] @relation("ExerciseWorkout")
   sets Set[]
   user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)

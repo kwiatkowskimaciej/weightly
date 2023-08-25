@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 interface Props {
   exercises: { id: string; name: string }[];
+  start: boolean;
 }
 
 interface Exercise {
@@ -13,11 +14,11 @@ interface Exercise {
   name: string;
 }
 
-export default function WorkoutLog({ exercises }: Props) {
+export default function WorkoutLog({ exercises, start }: Props) {
   const [workoutExercises, setWorkoutExercises] = useState<Exercise[]>([]);
   return (
     <>
-      <ExerciseForm workoutExercises={workoutExercises} />
+      <ExerciseForm workoutExercises={workoutExercises} start={start}/>
       <ExercisesDialog
         exercises={exercises}
         setWorkoutExercises={setWorkoutExercises}

@@ -2,11 +2,12 @@ import Link from 'next/link';
 
 interface Props {
   id: string;
+  name: string;
   date: Date;
   exerciseCount: number;
 }
 
-export default function WorkoutCard({ id, date, exerciseCount }: Props) {
+export default function WorkoutCard({ id, name, date, exerciseCount }: Props) {
   const daysOfWeek = [
     'Sunday',
     'Monday',
@@ -36,7 +37,7 @@ export default function WorkoutCard({ id, date, exerciseCount }: Props) {
         <span className="border-2 border-blue-400 rounded-lg inline-block px-4  text-stone-50 py-1">
           {exerciseCount} exercises
         </span>
-        <div className="font-header text-stone-50 text-2xl mt-4">{id}</div>
+        <div className="font-header text-stone-50 text-2xl mt-4">{name}</div>
         <div className="flex flex-col mt-4 gap-2 text-stone-200">
           <div className="flex items-center justify-start gap-2">
             <span className="material-symbols-outlined">calendar_month</span>
