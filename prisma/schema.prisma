@@ -69,6 +69,8 @@ model Set {
   completed Boolean
   exercise  Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String
+  workout  Workout @relation(fields: [workoutId], references: [id])
+  workoutId String
 }
 
 model Exercise {
@@ -82,6 +84,7 @@ model Workout {
   id    String @id @default(cuid())
   date DateTime
   exercises Exercise[] @relation("ExerciseWorkout")
+  sets Set[]
   user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
   plan    Plan?   @relation(fields: [planId], references: [id])

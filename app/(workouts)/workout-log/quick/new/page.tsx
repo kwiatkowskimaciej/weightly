@@ -1,7 +1,5 @@
-import ExerciseForm from '@/app/(workouts)/_components/ExerciseForm';
-import WorkoutTopBar from '@/app/(workouts)/_components/WorkoutTopBar';
 import { prisma } from '@/lib/prisma';
-import WorkoutLog from '../../_components/WorkoutLog';
+import WorkoutLog from '../../../_components/WorkoutLog';
 
 export default async function NewWorkout() {
   const exercises = await prisma.exercise.findMany();

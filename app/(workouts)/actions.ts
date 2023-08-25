@@ -47,6 +47,7 @@ export async function addWorkout(data: any) {
       data: {
         sets: {
           create: exercise.sets.map((set: any) => ({
+            workoutId: workout.id,
             weight: set.weight,
             reps: set.reps,
             completed: set.completed,

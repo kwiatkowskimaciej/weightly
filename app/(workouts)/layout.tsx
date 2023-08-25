@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={`${lato.className} ${bebas_neue.variable} bg-stone-50`}>
+        <body className={`${lato.className} ${bebas_neue.variable} bg-stone-900`}>
           {children}
         </body>
       </html>
