@@ -33,8 +33,8 @@ export default async function Preview({ params }: Props) {
       <WorkoutTopBar preview={true} />
       {workoutData?.exercises.map((exercise, exerciseIndex) => {
         return (
-          <div>
-            <ExerciseItem key={exerciseIndex} name={exercise.name} />
+          <div key={exerciseIndex}>
+            <ExerciseItem name={exercise.name} />
                 <table>
                   <thead>
                     <tr>
