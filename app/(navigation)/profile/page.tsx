@@ -2,10 +2,10 @@ import AuthCheck from '@/components/AuthCheck';
 import { SignInButton, SignOutButton } from '@/components/buttons';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import WorkoutCard from '@/components/WorkoutCard/WorkoutCard';
+import { authOptions } from '@/lib/utils/authOptions';
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
@@ -18,6 +18,20 @@ export default async function Profile() {
   const user = await prisma.user.findUnique({
     where: {
       email: currentUserEmail,
+    },
+    include: {
+      workouts: true,
+    },
+  });
+
+  const workouts = await prisma.workout.findMany({
+    where: {
+      userId: user?.id,
+    },
+    include: {
+      _count: {
+        select: { exercises: true },
+      },
     },
   });
   return (
@@ -32,9 +46,19 @@ export default async function Profile() {
           </AuthCheck>
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 mb-20">
         <p className="text-stone-50 font-header text-3xl">Last workouts</p>
-        <WorkoutCard />
+        {workouts.map((workout) => {
+          return (
+            <>
+              <WorkoutCard
+                key={workout.id}
+                exerciseCount={workout._count.exercises}
+                {...workout}
+              />
+            </>
+          );
+        })}
       </div>
     </div>
   );

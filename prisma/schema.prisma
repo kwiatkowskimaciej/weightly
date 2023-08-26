@@ -50,6 +50,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  workouts      Workout[]
+  plans         Plan[]
 }
 
 model VerificationToken {
@@ -58,4 +60,45 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Set {
+  id String @id @default(cuid())
+  weight Float
+  reps Int
+  completed Boolean
+  exercise  Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId String
+  workout  Workout @relation(fields: [workoutId], references: [id])
+  workoutId String
+}
+
+model Exercise {
+  id    String @id @default(cuid())
+  name  String
+  sets     Set[]
+  workouts Workout[] @relation("ExerciseWorkout")
+}
+
+model Workout {
+  id    String @id @default(cuid())
+  name String
+  date DateTime
+  save Boolean
+  exercises Exercise[] @relation("ExerciseWorkout")
+  sets Set[]
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  plan    Plan?   @relation(fields: [planId], references: [id])
+  planId  String?
+}
+
+model Plan {
+  id String @id @default(cuid())
+  name String
+  start DateTime
+  duration Int
+  workouts Workout[]
+  user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }

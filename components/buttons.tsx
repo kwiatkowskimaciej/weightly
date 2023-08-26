@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function SignInButton() {
   const { data: session, status } = useSession();
@@ -24,7 +24,16 @@ export function SignOutButton() {
       className="flex items-center bg-lime-300 pl-4 pr-6 rounded-full h-10 font-bold"
       onClick={() => signOut()}
     >
-      <span className='material-icons-outlined'>logout</span>Sign out
+      <span className="material-icons-outlined">logout</span>Sign out
+    </button>
+  );
+}
+
+export function Back() {
+  const router = useRouter();
+  return (
+    <button onClick={() => router.back()} className="material-icons-outlined">
+      arrow_back
     </button>
   );
 }

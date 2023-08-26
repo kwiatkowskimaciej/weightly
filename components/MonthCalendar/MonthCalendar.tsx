@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { generateDate, months } from '@/lib/utils/calendar';
 import { twMerge } from 'tailwind-merge';
+import { getWorkoutsDates } from './actions';
 
 interface MonthCalendarProps {
   show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>
+  setShow: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function MonthCalendar({ show, setShow }: MonthCalendarProps) {
@@ -13,6 +14,21 @@ export default function MonthCalendar({ show, setShow }: MonthCalendarProps) {
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
+  const [workoutDates, setWorkoutDates] = useState<string[]>([]);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  useEffect(() => {
+    async function fetchWorkoutDates() {
+      const dates = await getWorkoutsDates();
+      setWorkoutDates(dates);
+    }
+
+    fetchWorkoutDates();
+  }, []);
 
   return (
     <div
@@ -88,13 +104,24 @@ export default function MonthCalendar({ show, setShow }: MonthCalendarProps) {
                     date.toDate().toDateString()
                     ? 'bg-lime-300 text-stone-900'
                     : '',
-                  'h-10 w-10 rounded-full grid place-content-center transition-all cursor-pointer select-none'
+                  'relative h-10 w-10 rounded-full grid place-content-center transition-all cursor-pointer select-none'
                 )}
                 onClick={() => {
                   setSelectDate(date);
                 }}
               >
-                {date.date()}
+                {date.date()}{' '}
+                {workoutDates.some((workoutDate) =>
+                  date.isSame(workoutDate)
+                ) && (
+                  <span className={twMerge(
+                    selectDate.toDate().toDateString() ===
+                      date.toDate().toDateString()
+                      ? 'bg-stone-900'
+                      : 'bg-stone-50',
+                    'absolute bottom-1 h-1 w-1 rounded-full justify-self-center'
+                  )}></span>
+                )}
               </span>
             </div>
           )
