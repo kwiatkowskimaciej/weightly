@@ -4,14 +4,14 @@ import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { IWorkout, IWorkoutExercise } from './types';
 
 interface Args {
-  data: any;
-  name: string;
+  data: IWorkout;
   save: boolean;
 }
 
-export async function addWorkout({data, name, save}: Args) {
+export async function addWorkout({ data, save }: Args) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -31,7 +31,7 @@ export async function addWorkout({data, name, save}: Args) {
 
   const workout = await prisma.workout.create({
     data: {
-      name: name,
+      name: data.name,
       date: new Date(),
       save: save,
       userId: user.id,
@@ -42,14 +42,14 @@ export async function addWorkout({data, name, save}: Args) {
     where: { id: workout.id },
     data: {
       exercises: {
-        connect: data.map((exercise: any) => ({
+        connect: data.exercises.map((exercise: IWorkoutExercise) => ({
           id: exercise.id,
         })),
       },
     },
   });
 
-  for (const exercise of data) {
+  for (const exercise of data.exercises) {
     await prisma.exercise.update({
       where: { id: exercise.id },
       data: {
@@ -64,4 +64,31 @@ export async function addWorkout({data, name, save}: Args) {
       },
     });
   }
+}
+
+export async function getWorkout(workoutId: string): Promise<IWorkout | null> {
+  const workout = await prisma.workout.findUnique({
+    where: {
+      id: workoutId,
+    },
+    include: {
+      exercises: {
+        include: {
+          sets: {
+            where: {
+              workoutId: workoutId,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return workout || null;
+}
+
+export async function getExercises() {
+  const exercises = await prisma.exercise.findMany();
+
+  return exercises;
 }

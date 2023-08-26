@@ -1,77 +1,30 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import WorkoutTopBar from './WorkoutTopBar';
+import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import ExerciseItem from '@/components/ExerciseItem';
-import { title } from 'process';
+import { IWorkout } from '../types';
 
-interface Exercise {
-  id: string;
-  name: string;
-  sets: Set[];
-}
-
-interface Set {
-  id: number;
-  completed: boolean;
-  weight: number;
-  reps: number;
-}
-
-interface WorkoutExercisesSet {
-  id: string;
-  name: string;
-}
-
-interface ExerciseFormProps {
-  workoutExercises: WorkoutExercisesSet[];
+interface Props {
+  workout: IWorkout;
+  setWorkout: React.Dispatch<React.SetStateAction<IWorkout>>;
   start: boolean;
 }
 
-export default function ExerciseForm({
-  workoutExercises,
-  start,
-}: ExerciseFormProps) {
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    const updatedExercises = workoutExercises.map((workoutExercise) => {
-      const existingExercise = exercises.find(
-        (exercise) => exercise.id === workoutExercise.id
-      );
-
-      if (existingExercise) {
-        return {
-          ...existingExercise,
-        };
-      } else {
-        return {
-          id: workoutExercise.id,
-          name: workoutExercise.name,
-          sets: [],
-        };
-      }
-    });
-    setExercises(updatedExercises);
-  }, [workoutExercises]);
-
+export default function ExerciseForm({ workout, setWorkout, start }: Props) {
   const handleAddSet = (index: number) => {
-    const exercise = exercises[index];
+    const updatedWorkout: IWorkout = { ...workout };
 
-    const updatedExercise = {
-      ...exercise,
-      sets: [
-        ...exercise.sets,
-        { id: Date.now(), completed: false, weight: 0, reps: 0 },
-      ],
-    };
+    updatedWorkout.exercises[index].sets.push({
+      id: String(new Date()),
+      completed: false,
+      weight: 0,
+      reps: 0,
+      exerciseId: updatedWorkout.exercises[index].id,
+      workoutId: updatedWorkout.id,
+    });
 
-    const updatedExercises = [...exercises];
-    updatedExercises[index] = updatedExercise;
-
-    setExercises(updatedExercises);
+    setWorkout(updatedWorkout);
   };
 
   const handleWeightChange = (
@@ -79,9 +32,11 @@ export default function ExerciseForm({
     setIndex: number,
     value: string
   ) => {
-    const updatedExercises = [...exercises];
-    updatedExercises[exerciseIndex].sets[setIndex].weight = parseFloat(value);
-    setExercises(updatedExercises);
+    const updatedWorkout: IWorkout = { ...workout };
+    updatedWorkout.exercises[exerciseIndex].sets[setIndex].weight =
+      parseFloat(value);
+
+    setWorkout(updatedWorkout);
   };
 
   const handleRepsChange = (
@@ -89,21 +44,32 @@ export default function ExerciseForm({
     setIndex: number,
     value: string
   ) => {
-    const updatedExercises = [...exercises];
-    updatedExercises[exerciseIndex].sets[setIndex].reps = parseFloat(value);
-    setExercises(updatedExercises);
+    const updatedWorkout: IWorkout = { ...workout };
+    updatedWorkout.exercises[exerciseIndex].sets[setIndex].reps =
+      parseFloat(value);
+
+    setWorkout(updatedWorkout);
   };
 
   const handleComplete = (exerciseIndex: number, setIndex: number) => {
-    const updatedExercises = [...exercises];
-    const completed = updatedExercises[exerciseIndex].sets[setIndex].completed;
-    updatedExercises[exerciseIndex].sets[setIndex].completed = !completed;
-    setExercises(updatedExercises);
+    const updatedWorkout: IWorkout = { ...workout };
+    const completed =
+      updatedWorkout.exercises[exerciseIndex].sets[setIndex].completed;
+    updatedWorkout.exercises[exerciseIndex].sets[setIndex].completed =
+      !completed;
+
+    setWorkout(updatedWorkout);
   };
 
+  const handleNameChange = (name: string) => {
+    const updatedWorkout: IWorkout = { ...workout };
+
+    updatedWorkout.name = name;
+
+    setWorkout(updatedWorkout);
+  };
   return (
     <>
-      <WorkoutTopBar exercises={exercises} start={start} name={name} />
       <div>
         {!start && (
           <div className="mx-4 mb-4">
@@ -112,12 +78,12 @@ export default function ExerciseForm({
               type="text"
               placeholder="Workout title"
               onChange={(e) => {
-                setName(e.target.value);
+                handleNameChange(e.target.value);
               }}
             />
           </div>
         )}
-        {exercises.map((exercise, exerciseIndex) => {
+        {workout.exercises.map((exercise, exerciseIndex) => {
           return (
             <div key={exerciseIndex}>
               <ExerciseItem name={exercise.name} />
@@ -144,7 +110,7 @@ export default function ExerciseForm({
                     {exercise.sets.map((set, setIndex) => {
                       return (
                         <tr
-                          key={set.id}
+                          key={setIndex}
                           className={twMerge(
                             setIndex % 2 ? 'bg-stone-800' : 'bg-stone-900',
                             'h-12',
@@ -225,7 +191,7 @@ export default function ExerciseForm({
                   </tbody>
                 </table>
               </div>
-              <div className="mx-4">
+              <div className="mx-4 text-stone-50">
                 <button
                   className="w-full flex items-center justify-center bg-stone-800 rounded-full h-10 font-bold mt-2"
                   onClick={() => handleAddSet(exerciseIndex)}

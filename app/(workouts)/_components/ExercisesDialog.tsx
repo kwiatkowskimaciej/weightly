@@ -2,27 +2,57 @@
 
 import ExerciseItem from '@/components/ExerciseItem';
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+import { ISet, IWorkout, IWorkoutExercise } from '../types';
 
-interface ExercisesSet {
+interface Exercise {
   id: string;
   name: string;
 }
 
 interface Props {
-  exercises: { id: string; name: string }[];
-  setWorkoutExercises: React.Dispatch<React.SetStateAction<ExercisesSet[]>>;
+  exercises: Exercise[];
+  workout: IWorkout;
+  setWorkout: React.Dispatch<React.SetStateAction<IWorkout>>;
 }
 
 export default function ExercisesDialog({
   exercises,
-  setWorkoutExercises,
+  workout,
+  setWorkout,
 }: Props) {
   let [isOpen, setIsOpen] = useState(false);
-  let [chosen, setChosen] = useState<ExercisesSet[]>([]);
+  let [chosen, setChosen] = useState<Exercise[]>([]);
+
+  const addExercises = () => {
+    const updatedWorkout: IWorkout = { ...workout };
+
+    for (const exercise of chosen) {
+      const newSet: ISet = {
+        id: '',
+        weight: 0,
+        reps: 0,
+        completed: false,
+        exerciseId: exercise.id,
+        workoutId: workout.id,
+      };
+
+      const newExercise: IWorkoutExercise = {
+        ...exercise,
+        sets: [newSet],
+      };
+      updatedWorkout.exercises.push(newExercise);
+    }
+
+    setWorkout(updatedWorkout);
+
+    setChosen([]);
+    setIsOpen(false);
+  };
 
   return (
     <>
-      <div className="mx-4 mt-6">
+      <div className="mx-4 mt-6 text-stone-50">
         <button
           type="button"
           onClick={() => setIsOpen(true)}
@@ -33,9 +63,10 @@ export default function ExercisesDialog({
       </div>
 
       <div
-        className={`fixed w-full h-full top-0 bg-stone-900 ${
+        className={twMerge(
+          'fixed w-full h-full top-0 bg-stone-900',
           !isOpen && 'hidden'
-        }`}
+        )}
       >
         <div className="w-full h-16 px-4 bg-stone-900 text-stone-50 flex items-center justify-between border-b border-blue-400">
           <div className="flex items-center gap-4">
@@ -77,17 +108,11 @@ export default function ExercisesDialog({
         </div>
         <div className="px-4 w-full absolute bottom-4">
           <button
-            className={`${
-              chosen.length === 0 && 'hidden'
-            } w-full flex items-center justify-center bg-lime-900 rounded-full h-10 font-bold `}
-            onClick={() => {
-              setWorkoutExercises((prevExercises) => [
-                ...prevExercises,
-                ...chosen,
-              ]);
-              setChosen([]);
-              setIsOpen(false);
-            }}
+            className={twMerge(
+              chosen.length === 0 && 'hidden',
+              'w-full flex items-center justify-center bg-lime-900 rounded-full h-10 font-bold'
+            )}
+            onClick={() => addExercises()}
           >
             Add {chosen.length} exercise{chosen.length > 1 ? 's' : null}
           </button>

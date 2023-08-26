@@ -26,13 +26,11 @@ export default function Individual({ workouts }: WorkoutsProps) {
       </Link>
       {workouts.map((workout) => {
         return (
-          <>
             <WorkoutCard
               key={workout.id}
               exerciseCount={workout._count.exercises}
               {...workout}
             />
-          </>
         );
       })}
     </div>

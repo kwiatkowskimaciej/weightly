@@ -1,15 +1,17 @@
-'use client'
+'use client';
 
 import { addWorkout } from '@/app/(workouts)/actions';
 import { Back } from '@/components/buttons';
 import { useRouter } from 'next/navigation';
+import { IWorkout } from '../types';
 
-export default function WorkoutTopBar({
-  exercises,
-  preview,
-  start,
-  name,
-}: any) {
+interface Props {
+  workout: IWorkout;
+  start: boolean;
+  preview?: boolean;
+}
+
+export default function WorkoutTopBar({ workout, start, preview }: Props) {
   const router = useRouter();
   return (
     <div className="w-full h-16 px-4 bg-stone-900 text-stone-50 flex items-center justify-between border-b border-blue-400">
@@ -19,11 +21,11 @@ export default function WorkoutTopBar({
           {preview ? 'Workout details' : 'New workout'}
         </span>
       </div>
-      {start && !preview && (
+      {start && (
         <button
           className="flex items-center bg-lime-300 px-6 rounded-full h-10 font-bold text-stone-900"
           onClick={() => {
-            addWorkout({ data: exercises, name: 'Quick workout', save: false });
+            addWorkout({ data: workout, save: false });
             router.push('/workout');
           }}
         >
@@ -34,7 +36,7 @@ export default function WorkoutTopBar({
         <button
           className="flex items-center bg-lime-300 px-6 rounded-full h-10 font-bold text-stone-900"
           onClick={() => {
-            addWorkout({ data: exercises, name, save: true });
+            addWorkout({ data: workout, save: true });
             router.push('/workout');
           }}
         >
