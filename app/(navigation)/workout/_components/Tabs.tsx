@@ -16,11 +16,23 @@ interface Workout {
   };
 }
 
-interface WorkoutsProps {
-  workouts: Workout[];
+interface Plan {
+  id: string;
+  name: string;
+  start: Date;
+  duration: number;
+  userId: string;
+  _count: {
+    workouts: number;
+  };
 }
 
-export default function Tabs({ workouts }: WorkoutsProps) {
+interface Props {
+  workouts: Workout[];
+  plans: Plan[];
+}
+
+export default function Tabs({ workouts, plans }: Props) {
   const [openPlans, setOpenPlans] = useState(true);
 
   return (
@@ -55,9 +67,9 @@ export default function Tabs({ workouts }: WorkoutsProps) {
           ></div>
         </div>
       </div>
-      {/* <div className={openPlans ? '' : 'hidden'}>
+      <div className={openPlans ? '' : 'hidden'}>
         <Plans plans={plans} />
-      </div> */}
+      </div>
       <div className={openPlans ? 'hidden' : ''}>
         <Individual workouts={workouts} />
       </div>

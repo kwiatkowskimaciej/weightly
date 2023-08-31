@@ -21,7 +21,19 @@ export default async function Workout() {
     },
   });
 
-  const plans = await prisma.plan.findMany();
+  const plans = await prisma.plan.findMany({
+    where: {
+      userId: user?.id,
+    },
+    include: {
+      _count: {
+        select: {
+          workouts: true,
+        },
+      },
+    },
+  });
+
   const workouts = await prisma.workout.findMany({
     where: {
       userId: user?.id,
@@ -46,7 +58,7 @@ export default async function Workout() {
         </Link>
         <h2 className="font-header text-stone-50 text-3xl mt-6">Workout</h2>
       </div>
-      <Tabs workouts={workouts} />
+      <Tabs workouts={workouts} plans={plans} />
     </>
   );
 }
