@@ -68,6 +68,23 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
 
     setWorkout(updatedWorkout);
   };
+
+  const deleteExercise = (exerciseIndex: number) => {
+    const updatedWorkout: IWorkout = { ...workout };
+
+    updatedWorkout.exercises.splice(exerciseIndex, 1);
+
+    setWorkout(updatedWorkout);
+  };
+
+  const deleteSet = (exerciseIndex: number, setIndex: number) => {
+    const updatedWorkout: IWorkout = { ...workout };
+
+    updatedWorkout.exercises[exerciseIndex].sets.splice(setIndex, 1);
+
+    setWorkout(updatedWorkout);
+  };
+
   return (
     <>
       <div>
@@ -86,11 +103,22 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
         {workout.exercises.map((exercise, exerciseIndex) => {
           return (
             <div key={exerciseIndex}>
-              <ExerciseItem name={exercise.name} />
+              <div className="flex items-center justify-between pr-4 mt-2">
+                <ExerciseItem name={exercise.name} />
+                {start && (
+                  <button
+                    className="py-2 material-symbols-outlined bg-red-400 text-stone-900 p-2 rounded-full"
+                    onClick={() => deleteExercise(exerciseIndex)}
+                  >
+                    delete
+                  </button>
+                )}
+              </div>
               <div className="mt-1">
                 <table className="w-full text-center text-stone-400 table-fixed">
                   <thead className="text-xs w-full">
                     <tr>
+                      <th className="w-6"></th>
                       <th>SET</th>
                       <th>PREVIOUS</th>
                       <th>KG</th>
@@ -117,6 +145,18 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
                             set.completed && 'bg-lime-900 text-stone-50'
                           )}
                         >
+                          {start && (
+                            <td className="w-auto flex items-center text-center pl-4">
+                              <button
+                                className="material-symbols-outlined rounded-full"
+                                onClick={() =>
+                                  deleteSet(exerciseIndex, setIndex)
+                                }
+                              >
+                                close
+                              </button>
+                            </td>
+                          )}
                           <td className="w-auto">
                             <p>{setIndex + 1}</p>
                           </td>
