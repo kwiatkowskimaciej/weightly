@@ -9,12 +9,16 @@ import { IWorkout } from '../types';
 interface Exercise {
   id: string;
   name: string;
+  image: string | null;
+  video: string | null;
+  type: string;
 }
 
 interface Props {
   workoutPreload?: IWorkout | null;
   exercises: Exercise[];
   start: boolean;
+  inProgress?: boolean;
 }
 
 const emptyWorkout: IWorkout = {
@@ -31,11 +35,12 @@ export default function WorkoutLog({
   workoutPreload,
   exercises,
   start,
+  inProgress,
 }: Props) {
   const [workout, setWorkout] = useState(workoutPreload || emptyWorkout);
   return (
     <>
-      <WorkoutTopBar workout={workout} start={start} />
+      <WorkoutTopBar workout={workout} start={start} inProgress={inProgress}/>
       <ExerciseForm workout={workout} setWorkout={setWorkout} start={start} />
       <ExercisesDialog
         exercises={exercises}

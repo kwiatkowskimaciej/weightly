@@ -50,6 +50,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  sets          Set[]
   workouts      Workout[]
   plans         Plan[]
 }
@@ -64,18 +65,28 @@ model VerificationToken {
 
 model Set {
   id String @id @default(cuid())
-  weight Float
-  reps Int
+  date DateTime
+  reps Int?
+  weight Float?
+  addWeight Float?
+  subtractWeight Float?
+  time DateTime?
+  distance Float?
   completed Boolean
-  exercise  Exercise @relation(fields: [exerciseId], references: [id])
+  exercise  Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   exerciseId String
-  workout  Workout @relation(fields: [workoutId], references: [id])
+  workout  Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model Exercise {
   id    String @id @default(cuid())
   name  String
+  image String?
+  video String?
+  type String
   sets     Set[]
   workouts Workout[] @relation("ExerciseWorkout")
 }
@@ -85,11 +96,12 @@ model Workout {
   name String
   date DateTime
   save Boolean
+  inProgress Boolean
   exercises Exercise[] @relation("ExerciseWorkout")
   sets Set[]
   user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
-  plan    Plan?   @relation(fields: [planId], references: [id])
+  plan    Plan?   @relation(fields: [planId], references: [id], onDelete: Cascade)
   planId  String?
 }
 
@@ -98,6 +110,8 @@ model Plan {
   name String
   start DateTime
   duration Int
+  current Boolean
+  nextWorkoutId String
   workouts Workout[]
   user  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String

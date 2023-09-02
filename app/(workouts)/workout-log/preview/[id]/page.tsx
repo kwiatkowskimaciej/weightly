@@ -28,8 +28,8 @@ export default async function Preview({ params }: Props) {
       {workout?.exercises.map((exercise, exerciseIndex) => {
         return (
           <div key={exerciseIndex}>
-            <ExerciseItem name={exercise.name} />
-            <table className="w-full text-stone-400 table-auto text-left">
+            <ExerciseItem name={exercise.name} image={exercise.image}/>
+            <table className="w-full text-stone-400 table-auto text-left pl-4">
               <thead className="text-xs w-full">
                 <tr>
                   <th className='pl-4'>Set</th>
