@@ -9,17 +9,28 @@ interface Props {
   workout: IWorkout;
   setWorkout: React.Dispatch<React.SetStateAction<IWorkout>>;
   start: boolean;
+  preview?: boolean | false;
 }
 
-export default function ExerciseForm({ workout, setWorkout, start }: Props) {
+export default function ExerciseForm({
+  workout,
+  setWorkout,
+  start,
+  preview,
+}: Props) {
   const handleAddSet = (index: number) => {
     const updatedWorkout: IWorkout = { ...workout };
 
     updatedWorkout.exercises[index].sets.push({
       id: String(new Date()),
+      date: new Date(),
       completed: false,
-      weight: 0,
-      reps: 0,
+      weight: null,
+      reps: null,
+      addWeight: null,
+      subtractWeight: null,
+      time: null,
+      distance: null,
       exerciseId: updatedWorkout.exercises[index].id,
       workoutId: updatedWorkout.id,
     });
@@ -104,8 +115,8 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
           return (
             <div key={exerciseIndex}>
               <div className="flex items-center justify-between pr-4 mt-2">
-                <ExerciseItem name={exercise.name} />
-                {start && (
+                <ExerciseItem name={exercise.name} image={exercise.image!} />
+                {!preview && (
                   <button
                     className="py-2 material-symbols-outlined bg-red-400 text-stone-900 p-2 rounded-full"
                     onClick={() => deleteExercise(exerciseIndex)}
@@ -145,7 +156,7 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
                             set.completed && 'bg-lime-900 text-stone-50'
                           )}
                         >
-                          {start && (
+                          {!preview && (
                             <td className="w-auto flex items-center text-center pl-4">
                               <button
                                 className="material-symbols-outlined rounded-full"
@@ -170,7 +181,7 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
                                 set.completed && 'bg-lime-900'
                               )}
                               placeholder="--"
-                              value={set.weight.toString()}
+                              value={set.weight !== null ? set.weight.toString() : ''}
                               onChange={(e) =>
                                 handleWeightChange(
                                   exerciseIndex,
@@ -189,7 +200,7 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
                                 set.completed && 'bg-lime-900'
                               )}
                               placeholder="--"
-                              value={set.reps.toString()}
+                              value={set.reps !== null ? set.reps.toString() : ''}
                               onChange={(e) =>
                                 handleRepsChange(
                                   exerciseIndex,
@@ -200,26 +211,33 @@ export default function ExerciseForm({ workout, setWorkout, start }: Props) {
                             />
                           </td>
                           <td className="h-12 flex justify-center items-center">
-                            <div
-                              className={twMerge(
-                                !start ? 'hidden' : 'relative w-6 flex'
-                              )}
-                            >
+                            <div className={twMerge('relative w-6 flex')}>
                               <input
                                 type="checkbox"
-                                className="appearance-none w-6 h-6 rounded-sm bg-stone-400 shrink-0 checked:bg-lime-300"
+                                className={twMerge(
+                                  'appearance-none w-6 h-6 rounded-sm bg-stone-400 shrink-0 checked:bg-lime-300',
+                                  !start &&
+                                    (setIndex % 2
+                                      ? 'bg-stone-800'
+                                      : 'bg-stone-900')
+                                )}
                                 checked={set.completed}
                                 onChange={() =>
                                   handleComplete(exerciseIndex, setIndex)
                                 }
+                                disabled={!start}
                               />
                               <span
-                                className={
-                                  'absolute material-symbols-outlined pointer-events-none ' +
-                                  (set.completed
+                                className={twMerge(
+                                  'absolute material-symbols-outlined pointer-events-none',
+                                  set.completed
                                     ? 'text-lime-900'
-                                    : 'text-stone-100')
-                                }
+                                    : 'text-stone-100',
+                                  !start &&
+                                    (setIndex % 2
+                                      ? 'text-stone-800'
+                                      : 'text-stone-900')
+                                )}
                               >
                                 done
                               </span>

@@ -5,6 +5,8 @@ interface Plan {
   name: string;
   start: Date;
   duration: number;
+  current: boolean;
+  nextWorkoutId: string;
   userId: string;
   _count: {
     workouts: number;

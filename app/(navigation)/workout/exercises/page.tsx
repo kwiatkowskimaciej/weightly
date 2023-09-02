@@ -1,14 +1,27 @@
 import ExerciseItem from '@/components/ExerciseItem';
-import { prisma } from '@/lib/prisma';
 
 export default async function Exercises() {
-  const exercises = await prisma.exercise.findMany();
+  const url = 'https://exercisedb.p.rapidapi.com/exercises';
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': process.env.RAPID_API_KEY!,
+      'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
+    },
+  };
+
+  const response = await fetch(url, options);
+  const exercises = await response.json();
 
   return (
     <div>
-      {exercises.map((exercise) => {
+      {exercises.map((exercise: any, index: number) => {
         return (
-          <ExerciseItem key={exercise.id} {...exercise} />
+          <ExerciseItem
+            key={index}
+            name={exercise.name}
+            image={exercise.gifUrl}
+          />
         );
       })}
     </div>

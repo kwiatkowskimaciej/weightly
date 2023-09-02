@@ -2,18 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
 export async function GET(request:Request) {
-  const workout = await prisma.workout.findUnique({
-    where: {
-      id: "cllsjv84q0001r9a544pdzda6",
-    },
-    include: {
-      exercises: {
-        include: {
-          sets: true,
-        },
-      },
-    },
-  });
+  const exercises = await prisma.exercise.findMany()
 
-  return NextResponse.json(workout)
+  return NextResponse.json(exercises)
 }
