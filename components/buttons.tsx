@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteWorkout } from '@/app/(navigation)/actions';
-import { addWorkout } from '@/app/(workouts)/actions';
+import { addWorkout, updateWorkout } from '@/app/(workouts)/actions';
 import { IWorkout } from '@/app/(workouts)/types';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -50,9 +50,8 @@ export function WorkoutBack({ workout }: WorkoutBackProps) {
   return (
     <button
       onClick={() => {
-        addWorkout({ data: workout, save: false, inProgress: true });
+        updateWorkout({ data: workout });
         router.back();
-        router.refresh();
       }}
       className="material-icons-outlined"
     >

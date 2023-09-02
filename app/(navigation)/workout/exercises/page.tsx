@@ -15,8 +15,14 @@ export default async function Exercises() {
 
   return (
     <div>
-      {exercises.map((exercise: any) => {
-        return <ExerciseItem name={exercise.name} image={exercise.gifUrl} />;
+      {exercises.map((exercise: any, index: number) => {
+        return (
+          <ExerciseItem
+            key={index}
+            name={exercise.name}
+            image={exercise.gifUrl}
+          />
+        );
       })}
     </div>
   );

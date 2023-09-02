@@ -34,7 +34,9 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={`${lato.className} ${bebas_neue.variable} bg-stone-900`}>
+        <body
+          className={`${lato.className} ${bebas_neue.variable} bg-stone-900`}
+        >
           <TopBar />
           <ResumeWorkout />
           <Navigation navLinks={navLinks} />

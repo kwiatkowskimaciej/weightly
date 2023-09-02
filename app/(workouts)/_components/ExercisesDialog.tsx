@@ -120,7 +120,12 @@ export default function ExercisesDialog({ workout, setWorkout }: Props) {
             return (
               <div
                 key={exercise.id}
-                className={twMerge(chosen.some((item) => item.id === exercise.id) ? 'ease-out translate-x-8' : '', 'transition-all flex items-center')}
+                className={twMerge(
+                  chosen.some((item) => item.id === exercise.id)
+                    ? 'ease-out translate-x-8'
+                    : '',
+                  'transition-all flex items-center'
+                )}
                 onClick={() => {
                   if (chosen.some((item) => item.id === exercise.id)) {
                     const updatedList = chosen.filter(
@@ -141,7 +146,13 @@ export default function ExercisesDialog({ workout, setWorkout }: Props) {
                   }
                 }}
               >
-                <div className={twMerge(chosen.some((item) => item.id === exercise.id) ? 'bg-lime-300 w-2 h-16 rounded-full' : 'hidden',)}></div>
+                <div
+                  className={twMerge(
+                    chosen.some((item) => item.id === exercise.id)
+                      ? 'bg-lime-300 w-2 h-16 rounded-full'
+                      : 'hidden'
+                  )}
+                ></div>
                 <ExerciseItem {...exercise} />
               </div>
             );

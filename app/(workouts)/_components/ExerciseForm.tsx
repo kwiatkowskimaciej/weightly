@@ -181,7 +181,7 @@ export default function ExerciseForm({
                                 set.completed && 'bg-lime-900'
                               )}
                               placeholder="--"
-                              value={set.weight?.toString()}
+                              value={set.weight !== null ? set.weight.toString() : ''}
                               onChange={(e) =>
                                 handleWeightChange(
                                   exerciseIndex,
@@ -200,7 +200,7 @@ export default function ExerciseForm({
                                 set.completed && 'bg-lime-900'
                               )}
                               placeholder="--"
-                              value={set.reps?.toString()}
+                              value={set.reps !== null ? set.reps.toString() : ''}
                               onChange={(e) =>
                                 handleRepsChange(
                                   exerciseIndex,
@@ -216,7 +216,10 @@ export default function ExerciseForm({
                                 type="checkbox"
                                 className={twMerge(
                                   'appearance-none w-6 h-6 rounded-sm bg-stone-400 shrink-0 checked:bg-lime-300',
-                                  !start && (setIndex % 2 ? 'bg-stone-800' : 'bg-stone-900')
+                                  !start &&
+                                    (setIndex % 2
+                                      ? 'bg-stone-800'
+                                      : 'bg-stone-900')
                                 )}
                                 checked={set.completed}
                                 onChange={() =>
@@ -230,7 +233,10 @@ export default function ExerciseForm({
                                   set.completed
                                     ? 'text-lime-900'
                                     : 'text-stone-100',
-                                  !start && (setIndex % 2 ? 'text-stone-800' : 'text-stone-900')
+                                  !start &&
+                                    (setIndex % 2
+                                      ? 'text-stone-800'
+                                      : 'text-stone-900')
                                 )}
                               >
                                 done

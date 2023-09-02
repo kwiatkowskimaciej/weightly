@@ -5,6 +5,8 @@ interface Plan {
   name: string;
   start: Date;
   duration: number;
+  current: boolean;
+  nextWorkoutId: string;
   userId: string;
   _count: {
     workouts: number;
@@ -16,39 +18,17 @@ export default function WorkoutCard({
   name,
   start,
   duration,
+  current,
   userId,
   _count,
 }: Plan) {
-  const daysOfWeek = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
   return (
     <div className="relative">
       <Link href={`/plan/${id}`}>
         <div className="bg-stone-800 bg-workout-card-pattern bg-cover rounded-xl w-full p-4 mt-2 relative border-2 border-stone-800 bg-blend-luminosity">
-          <span className="border-2 border-blue-400 rounded-lg inline-block px-4  text-stone-50 py-1">
-            {start.getFullYear()}
-          </span>
+          {current && <span className="border-2 border-blue-400 rounded-lg inline-block px-4  text-stone-50 py-1">
+            Current
+          </span>}
           <div className="font-header text-stone-50 text-2xl mt-4">{name}</div>
           <div className="flex flex-col mt-4 gap-2 text-stone-200">
             <div className="flex items-center justify-start gap-2">
