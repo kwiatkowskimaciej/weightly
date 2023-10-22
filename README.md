@@ -1,4 +1,4 @@
-# Frontend Mentor - In-browser markdown editor solution
+# Weightly
 
 Weightly is a gym workout tracker app. I made it beacause none of the popular workout tracking app meet my needs.
 
